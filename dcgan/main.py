@@ -257,7 +257,7 @@ for epoch in range(opt.niter):
         # (2) Update G network: maximize log(D(G(z)))
         ###########################
         netG.zero_grad()
-        #netD.zero_grad() # wang: we should reset D grad? original did not
+        netD.zero_grad() # wang: we should reset D grad? original did not
         label.fill_(real_label)  # fake labels are real for generator cost
         output = netD(fake)
         errG = criterion(output, label)
@@ -265,7 +265,7 @@ for epoch in range(opt.niter):
         D_G_z2 = output.mean().item()
         optimizerG.step()
 
-        print('[%d/%d][%d/%d] Loss_D: %.4f Loss_G: %.4f D(x): %.4f D(G(z)): %.4f / %.4f'
+        print('[%d/%d][%d/%d] Loss_D, %.4f, Loss_G, %.4f D(x), %.4f, D(G(z)), %.4f / %.4f'
               % (epoch, opt.niter, i, len(dataloader),
                  errD.item(), errG.item(), D_x, D_G_z1, D_G_z2))
         if i % 100 == 0:
